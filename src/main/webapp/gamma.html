@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Gamma Function</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="perfTime">Loading...</div>
+
+<form>
+    
+<table style="text-align:center;">
+	<tr style="text-align:center;">
+		<td colspan = "4">
+			<input id="resultado" type="text" value="0" size="20" style="border: 3px solid blue; padding: 10px;" /><input id="memoria" type="hidden" value="0" />
+		</td>
+	</tr>
+
+	<tr style="text-align:center;">
+		<td colspan = "4">
+		<input type="button" value="log10(n!)"
+		  onClick="document.getElementById('resultado').value =resultado_onclick(); return false;"
+		  style="width:110px">
+		</td>
+	</tr>
+
+
+</table>	
+	
+</form>
+
+<script>
+<!--
+
+var
+M_GAMMA = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5],
+M_GAMMAS = 6;
+
+function gammaFn(x)
+{
+var i = 0, n = ++x, tmp = x + 5.5, ser = 1.000000000190015;
+for (tmp -= (x + 0.5) * Math.log(tmp); i < M_GAMMAS; ++i) ser += M_GAMMA [i] / ++n;
+return Math.log(2.5066282746310005 * ser / x) - tmp;
+}
+
+function fact(x) { return x > 1 ? Math.exp(gammaFn(x)) : 1 }
+
+function combin(n, k) { return (Math.exp(gammaFn(n) - gammaFn(n - k) - gammaFn(k)) + 0.5) | 0 } // Ms Excel COMBIN() n! / k!(n - k)!
+
+//n = 49; k = 6; alert(fact(n) + ' ' + fact(k) + ' ' + combin(n, k)); // Lottery odds! (13,983,816)
+
+//alert(Math.log(2.7182));
+
+//alert(gammaFn(10))
+
+if (!Date.now) {
+    Date.now = function() { return performance.now(); }
+    Date.start =Date.now();
+    Date.PerfTime = function() { return Date.now() -Date.start; }
+}
+
+var result = document.getElementById("perfTime");
+
+//result.innerText=Date.now();
+
+//result.innerText=Math.trunc(gammaFn(1000) / Math.LN10);
+
+//result.innerText=result.innerText + "\n" + Date.PerfTime();
+
+function resultado_onclick()
+{
+
+    var calculator = {
+        gammaFn: function response(n) {
+        	
+var perfTime = performance.now();
+n =Math.ceil(gammaFn(n) / Math.LN10);
+document.getElementById("perfTime").innerText ="This tooks " + (performance.now() - perfTime) + " milliseconds.";
+return n;
+        }
+    };
+
+return calculator.gammaFn(parseInt(document.getElementById("resultado").value));
+}
+
+//-->
+</script>
+</body>
+</html>
